@@ -26,4 +26,13 @@ router.get("/", (req, res) => {
       }));
   });
 
+  // GET individual product
+  router.get("/:productId", (req, res) => {
+    Product.findById(req.params.productId)
+      .then(products => res.json(products))
+      .catch(err => res.status(500).json({
+        message: "Internal Server Error", err
+      }));
+  });
+
   module.exports = router;

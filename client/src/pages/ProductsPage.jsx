@@ -1,40 +1,46 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { CartContext } from "../context/cart.context";
 
 const API_URL = "http://localhost:5005";
 
 function ProductsPage() {
 
-    const getAllProducts = () => {
-        // Get the token from the localStorage
-        const storedToken = localStorage.getItem("authToken");
+    const { addToCart } = useContext(CartContext);
 
-        // Send the token through the request "Authorization" Headers
-        axios
-            .get(
-                `${API_URL}/products`,
-                { headers: { Authorization: `Bearer ${storedToken}` } }
-            )
-            .then((response) => setProducts(response.data))
-            .catch((error) => console.log(error));
-    };
+  const getAllProducts = () => {
 
-    const [products, setProducts] = useState([])
+    // Get the token from the localStorage
+    const storedToken = localStorage.getItem("authToken");
 
-    useEffect(() => {
-        getAllProducts()
-    }, [])
+    // Send the token through the request "Authorization" Headers
+    axios
+      .get(`${API_URL}/products`, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => setProducts(response.data))
+      .catch((error) => console.log(error));
+  };
 
-    return (
-        <div>ProductsPage
+  const [products, setProducts] = useState([]);
 
-            {products.map((product) => (
-                <Link to={`/products/${product._id}`} key={product._id}> {product.name} </Link>
-            ))}
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
-        </div>
-    )
+  return (
+    <div>
+      ProductsPage
+      {products.map((product) => (
+        <Link to={`/products/${product._id}`} key={product._id}>
+          {" "}
+          {product.name}{" "}
+        </Link>
+        
+      ))}
+    </div>
+  );
 }
 
-export default ProductsPage
+export default ProductsPage;

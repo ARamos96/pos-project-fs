@@ -34,7 +34,7 @@ const adminRouter = require("./routes/admin.routes")
 app.use("/admin", isAuthenticated, roles(["admin"]), adminRouter);
 
 const productRouter = require('./routes/product.routes')
-app.use("/products", isAuthenticated, roles(["admin"]), productRouter);
+app.use("/products", isAuthenticated, roles(["admin", "vendor", "user" ]), productRouter);
 
 const purchaseRouter = require('./routes/purchase.routes');
 app.use("/purchases", isAuthenticated, purchaseRouter);
